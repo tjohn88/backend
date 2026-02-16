@@ -27,6 +27,15 @@ backend/
 
 ### 1. Подготовка окружения
 - Установите Python 3.10+
+- Установите Инструмент для PDF (pdftotext.exe):
+Скачайте Poppler for Windows (https://github.com/oschwartz10612/poppler-windows/releases/).
+Создайте внутри структуру папок: d:/backend/ocr_engine/Library/bin/.
+Положите туда файл pdftotext.exe.
+
+- Установите PostgreSQL
+При установке задайте пароль 1 (или поменяйте его потом в файле .env в параметре DB_PASS).
+Создайте пустую базу данных с именем books-db (параметр DB_NAME).
+
 - Установите зависимости:
   ```bash
   pip install -r requirements.txt
@@ -35,6 +44,11 @@ backend/
   - `TELEGRAM_BOT_TOKEN`
   - `DB_USER`, `DB_PASS`, `DB_NAME` (PostgreSQL)
   - `LLM_API_BASE` (путь к локальному LM Studio или OpenAI API)
+
+  - Установите llama.cpp:
+pip uninstall llama-cpp-python -y
+env CMAKE_ARGS="-DGGML_CUDA=on" pip install --force-reinstall --no-cache-dir "llama-cpp-python[server]"
+
 
 ### 2. Импорт данных
 Перед запуском нужно наполнить базы данных информацией из ваших каталогов (excel/json).
@@ -48,7 +62,11 @@ backend/
    python scripts/3_ingest_fulltext.py
    ```
 
-### 3. Запуск приложения
+### 3. Запуск сервера
+python -m llama_cpp.server --port 8080   --model "./models/Qwen3-30B-A3B-Instruct-2507-Q5_K_M.gguf"   --n_ctx 4096   --n_gpu_layers 999   --tensor_split 12 24 8
+
+
+### 4. Запуск приложения
 Приложение запускает основной веб-сервер и Telegram-бота одновременно.
 ```bash
 uvicorn app.main:app --host 0.0.0.0 --port 8000
