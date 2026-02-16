@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Библиотечный ИИ-Поиск</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Поисковая панель */
+        .search-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        #search-input {
+            flex-grow: 1;
+            padding: 12px 16px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        #search-button {
+            padding: 12px 24px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        #search-button:hover {
+            background: #0056b3;
+        }
+
+        /* Настройки поиска */
+        .settings-row {
+            display: flex;
+            gap: 10px;
+            font-size: 14px;
+            color: #6c757d;
+            flex-wrap: wrap;
+            align-items: center;
+            background: #f1f3f5;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        select {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+        }
+
+        /* Результаты */
+        #results {
+            margin-top: 25px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 15px;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            border-color: #dee2e6;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .card h3 {
+            margin: 0 0 8px 0;
+            color: #007bff;
+            font-size: 18px;
+        }
+
+        .card .meta {
+            font-size: 13px;
+            color: #495057;
+            line-height: 1.6;
+        }
+
+        .card .links {
+            margin-top: 10px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .card a {
+            color: #28a745;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .btn-analyze {
+            padding: 6px 12px;
+            font-size: 12px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-analyze:hover {
+            background: #495057;
+        }
+
+        .ai-answer {
+            background: #e7f3ff;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #adb5bd;
+            padding: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Библиотечный поиск</h1>
+
+        <div class="search-box">
+            <form id="search-form" class="input-group">
+                <input type="text" id="search-input" placeholder="Введите ваш запрос..." required>
+                <button type="submit" id="search-button">Найти</button>
+            </form>
+
+            <div class="settings-row">
+                <span>Режим:
+                    <select id="search-mode">
+                        <option value="rag">🧠 Умный ответ (AI)</option>
+                        <option value="sql">🔎 Точный поиск (БД)</option>
+                    </select>
+                </span>
+                <span>Каталог: <select id="search-table"></select></span>
+                <span id="field-wrapper" class="hidden">Поле:
+                    <select id="search-field">
+                        <option value="title">📖 Название</option>
+                        <option value="author">👤 Автор</option>
+                        <option value="subject">🏷 Рубрика</option>
+                        <option value="bbk">🔢 ББК</option>
+                    </select>
+                </span>
+            </div>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const resultsDiv = document.getElementById('results');
+        const searchForm = document.getElementById('search-form');
+        const modeSelect = document.getElementById('search-mode');
+        const tableSelect = document.getElementById('search-table');
+        const fieldWrapper = document.getElementById('field-wrapper');
+
+        // 1. Загружаем список таблиц при старте
+        async function loadTables() {
+            try {
+                const res = await fetch('/api/tables');
+                const data = await res.json();
+                tableSelect.innerHTML = data.tables.map(t => `<option value="${t}">${t}</option>`).join('');
+            } catch (e) { console.error("Ошибка загрузки таблиц", e); }
+        }
+        loadTables();
+
+        // 2. Показываем поле поиска только для SQL
+        modeSelect.addEventListener('change', () => {
+            fieldWrapper.classList.toggle('hidden', modeSelect.value !== 'sql');
+        });
+
+        // 3. Обработка поиска
+        searchForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            resultsDiv.innerHTML = '<div class="loading">Идет поиск...</div>';
+
+            const payload = {
+                query: document.getElementById('search-input').value,
+                mode: modeSelect.value,
+                table: tableSelect.value,
+                field: document.getElementById('search-field').value
+            };
+
+            try {
+                const res = await fetch('/api/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                renderResults(data);
+            } catch (err) {
+                resultsDiv.innerHTML = `<div style="color:red">Ошибка: ${err.message}</div>`;
+            }
+        });
+
+        function renderResults(data) {
+            resultsDiv.innerHTML = '';
+
+            // Если это RAG (ИИ), выводим ответ сверху
+            if (data.mode === 'rag' && data.answer) {
+                const aiCard = document.createElement('div');
+                aiCard.className = 'ai-answer';
+                aiCard.innerHTML = `<strong>Ответ ИИ:</strong><p>${data.answer.replace(/\n/g, '<br>')}</p>`;
+                resultsDiv.appendChild(aiCard);
+            }
+
+            const items = data.results || [];
+            if (items.length === 0 && data.mode === 'sql') {
+                resultsDiv.innerHTML += '<div class="loading">Ничего не найдено.</div>';
+                return;
+            }
+
+            items.forEach((book, idx) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                let meta = [];
+                if (book.author_sign) meta.push(`Авт.знак: ${book.author_sign}`);
+                if (book.bbk) meta.push(`ББК: ${book.bbk}`);
+                if (book.grnti) meta.push(`ГРНТИ: ${book.grnti}`);
+                if (book.systematic_code) meta.push(`Шифр: ${book.systematic_code}`);
+
+                card.innerHTML = `
+                <h3>${idx + 1}. ${book.author || 'Автор не указан'} — ${book.title}</h3>
+                <div class="meta">
+                    ${meta.join(' | ')}<br>
+                    ${book.owners ? `<b>Держатель:</b> ${book.owners}` : ''}
+                </div>
+                <div class="links">
+                    ${book.pdf_url && book.pdf_url !== 'None' ? `<a href="${book.pdf_url}" target="_blank">🔗 PDF</a>` : ''}
+                    ${(book.has_text || (book.pdf_url && book.pdf_url !== 'None')) ?
+                        `<button class="btn-analyze" onclick="analyze(${book.id}, '${tableSelect.value}', this)">📝 Анализ PDF</button>` : ''}
+                </div>
+                <div class="analysis-result hidden" style="margin-top:10px; font-size:13px; color:#555; background:#f8f9fa; padding:10px; border-radius:4px;"></div>
+            `;
+                resultsDiv.appendChild(card);
+            });
+        }
+
+        async function analyze(id, table, btn) {
+            const resultDiv = btn.closest('.card').querySelector('.analysis-result');
+            btn.disabled = true;
+            btn.innerText = '⏳ Анализирую...';
+            resultDiv.classList.remove('hidden');
+            resultDiv.innerText = 'Загрузка текста и анализ нейросетью...';
+
+            try {
+                const res = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ book_id: id, table: table })
+                });
+                const data = await res.json();
+                if (data.error) throw new Error(data.error);
+                resultDiv.innerHTML = `<b>Краткое содержание:</b><br>${data.analysis.replace(/\n/g, '<br>')}`;
+            } catch (err) {
+                resultDiv.innerText = 'Ошибка: ' + err.message;
+            } finally {
+                btn.innerText = '✅ Готово';
+            }
+        }
+    </script>
+
+</body>
+
+</html>

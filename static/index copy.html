@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нейросетевой поиск</title>
+    <style>
+        /* Простые стили для красивого отображения */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+        #search-form {
+            display: flex;
+            gap: 10px;
+        }
+        #search-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        #search-button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #search-button:hover {
+            background-color: #0056b3;
+        }
+        #results {
+            margin-top: 20px;
+        }
+        .result-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .result-item h3 {
+            margin: 0 0 5px 0;
+        }
+        .result-item p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+        .loading {
+            text-align: center;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Поиск с помощью ИИ</h1>
+        
+        <form id="search-form">
+            <input type="text" id="search-input" placeholder="Введите ваш запрос..." required>
+            <button type="submit" id="search-button">Найти</button>
+        </form>
+
+        <div id="results">
+            <!-- Результаты поиска будут появляться здесь -->
+        </div>
+    </div>
+
+    <script>
+        // Находим наши элементы на странице
+        const searchForm = document.getElementById('search-form');
+        const searchInput = document.getElementById('search-input');
+        const resultsDiv = document.getElementById('results');
+
+        // Добавляем обработчик на отправку формы
+        searchForm.addEventListener('submit', async (event) => {
+            // Предотвращаем стандартное поведение формы (перезагрузку страницы)
+            event.preventDefault(); 
+            
+            const queryText = searchInput.value;
+            
+            // Показываем пользователю, что что-то происходит
+            resultsDiv.innerHTML = '<p class="loading">Идет поиск...</p>';
+
+            try {
+                // !!! ВАЖНО: Замените этот URL на адрес вашего FastAPI сервера !!!
+                const apiUrl = 'http://127.0.0.1:8000/api/ask';
+                
+                // Отправляем POST-запрос с помощью fetch
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json', // Говорим серверу, что отправляем JSON
+                    },
+                    // Преобразуем наш объект в JSON-строку
+                    body: JSON.stringify({ query: queryText }), 
+                });
+
+                // Проверяем, что ответ успешный (статус 200-299)
+                if (!response.ok) {
+                    throw new Error(`Ошибка сервера: ${response.status}`);
+                }
+
+                // Преобразуем ответ от сервера из JSON в объект
+                const data = await response.json();
+
+                // Отображаем полученные результаты
+                displayResults(data);
+
+            } catch (error) {
+                console.error('Ошибка при выполнении запроса:', error);
+                resultsDiv.innerHTML = `<p style="color: red;">Не удалось выполнить поиск. Убедитесь, что сервер запущен и доступен. Ошибка: ${error.message}</p>`;
+            }
+        });
+
+        // Функция для отображения результатов на странице
+        function displayResults(data) {
+            resultsDiv.innerHTML = ''; // Очищаем старые результаты
+
+            // Отображаем ответ от ИИ
+            if (data.answer) {
+                const answerItem = document.createElement('div');
+                answerItem.className = 'result-item';
+                answerItem.innerHTML = `
+                    <h3>Ответ от ИИ:</h3>
+                    <p>${data.answer}</p>
+                `;
+                resultsDiv.appendChild(answerItem);
+            }
+            
+            // Если есть контекст, отображаем его
+            if (data.context && data.context.length > 0) {
+                const contextItem = document.createElement('div');
+                contextItem.className = 'result-item';
+                contextItem.innerHTML = `
+                    <h3>Найденный контекст:</h3>
+                    <p>${data.context}</p>
+                `;
+                resultsDiv.appendChild(contextItem);
+            }
+            
+            if (!data.answer && !data.context) {
+                resultsDiv.innerHTML = '<p>Ничего не найдено.</p>';
+            }
+        }
+    </script>
+
+</body>
+</html>

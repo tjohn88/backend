@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск с GigaChat</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            color: #4a4a4a;
+        }
+        #search-form {
+            display: flex;
+            gap: 10px;
+        }
+        #query-input {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        #submit-btn {
+            padding: 12px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        #submit-btn:hover {
+            background-color: #0056b3;
+        }
+        #submit-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #result-area {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            min-height: 50px;
+            white-space: pre-wrap; /* Сохраняет переносы строк */
+        }
+        #loading {
+            text-align: center;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Задайте вопрос GigaChat</h1>
+        <form id="search-form">
+            <input type="text" id="query-input" placeholder="Например: Расскажи о пользе сна" required>
+            <button type="submit" id="submit-btn">Отправить</button>
+        </form>
+        <div id="result-area">
+            <p id="loading" style="display: none;">Загрузка...</p>
+        </div>
+    </div>
+
+    <script>
+        // Получаем ссылки на элементы DOM
+        const form = document.getElementById('search-form');
+        const input = document.getElementById('query-input');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultArea = document.getElementById('result-area');
+        const loadingIndicator = document.getElementById('loading');
+
+        // Добавляем обработчик события на отправку формы
+        form.addEventListener('submit', async (event) => {
+            // 1. Предотвращаем стандартное поведение формы (перезагрузку страницы)
+            event.preventDefault();
+
+            // 2. Получаем текст из поля ввода и убираем лишние пробелы
+            const query = input.value.trim();
+            if (!query) {
+                alert("Пожалуйста, введите ваш запрос.");
+                return;
+            }
+
+            // 3. Показываем индикатор загрузки и блокируем кнопку
+            setLoadingState(true);
+            resultArea.textContent = ''; // Очищаем предыдущий результат
+
+            try {
+                // 4. Отправляем POST-запрос на наш бэкенд
+                const response = await fetch('/ask_gigachat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: query }) // Отправляем запрос в формате JSON
+                });
+
+                // 5. Проверяем, что ответ успешный (статус 200-299)
+                if (!response.ok) {
+                    // Если сервер вернул ошибку, пробуем получить её текст
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || `Ошибка сервера: ${response.status}`);
+                }
+
+                // 6. Парсим JSON из ответа
+                const data = await response.json();
+                
+                // 7. Отображаем результат
+                resultArea.textContent = data.response;
+
+            } catch (error) {
+                // 8. Обрабатываем любые ошибки (сетевые, ошибки сервера и т.д.)
+                console.error('Произошла ошибка:', error);
+                resultArea.textContent = `Произошла ошибка: ${error.message}`;
+            } finally {
+                // 9. Скрываем индикатор загрузки и разблокируем кнопку
+                setLoadingState(false);
+            }
+        });
+
+        function setLoadingState(isLoading) {
+            submitBtn.disabled = isLoading;
+            loadingIndicator.style.display = isLoading ? 'block' : 'none';
+        }
+    </script>
+
+</body>
+</html>
