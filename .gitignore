@@ -16,6 +16,7 @@ chromadb_store/
 # Large models (downloaded locally)
 models/
 intfloat/
+ocr_engine/
 
 # User Uploads & Temp
 uploads/
