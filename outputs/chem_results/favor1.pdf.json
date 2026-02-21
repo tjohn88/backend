@@ -1,0 +1,64 @@
+[
+  {
+    "page": 0,
+    "text_content": "=====================\nBASE:  torch.Size([1, 256, 1280])\nPATCHES:  torch.Size([6, 144, 1280])\n=====================\n<|ref|>title<|/ref|><|det|>[[323, 204, 760, 238]]<|/det|>\n# АЦЕТИЛЕН-АЛЛЕН-ДИЕНОВАЯ СТУПЕНЧАТАЯ ПЕРЕГРУППИРОВКА ГАЛОИДГИДРИНОВ\n\n<|ref|>text<|/ref|><|det|>[[336, 251, 737, 267]]<|/det|>\nA. E. ФАВОРСКИЙ и Т. А. ФАВОРСКАЯ\n\n<|ref|>text<|/ref|><|det|>[[412, 275, 660, 290]]<|/det|>\nCompt. Rend., 200 (10) 839 (1935)\n\n<|ref|>text<|/ref|><|det|>[[230, 298, 820, 350]]<|/det|>\nПри действии соляной кислоты в присутствии CuCl₂ и NH₄Cl диметил-ацетиленилкарбинол дает соответствующий хлоргидрин с т. кип. 76°, ул. весом 0,9061, дающий белый осадок с аммиачным раствором окиси серебра:\n\n<|ref|>equation<|/ref|><|det|>[[377, 360, 702, 407]]<|/det|>\n \\[ \\begin{array}{c}\\mathrm{CH}_{3}\\\\\\mathrm{CH}_{3}\\\\\\mathrm{CH}_{3}\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{3}\\\\\\mathrm{CH}_{3}\\\\\\end{array}\\begin{array}{|c}\\mathrm{CH}_{3}\\\\\\mathrm{CH}_{3}\\\\\\end{array}\\mathrm{CH}_{3}\\begin{array}{|c}\\mathrm{CH}_{3}\\\\\\mathrm{CH}_{3}\\end{array}\\begin{array}{|c}\\mathrm{CH}_{3}\\\\\\mathrm{CH}_{\n\n<|ref|>text<|/ref|><|det|>[[373, 406, 714, 422]]<|/det|>\nМетил-2-бутин-3-ол-2 Метил-2-хлор-2-бутин-3\n\n<|ref|>text<|/ref|><|det|>[[228, 434, 816, 489]]<|/det|>\nТот же хлоргидрин получается при кратковременном действии солной кислоты на этот спирт в присутствии  \\( Cu_{2}Cl_{2} \\)  и  \\( NH_{4}Cl \\) ; если взаимодействие продолжается в течение длительного времени, хлоргидрин измериуется в этих условиях следующим образом:\n\n<|ref|>equation<|/ref|><|det|>[[375, 501, 722, 547]]<|/det|>\n \\[ \\begin{array}{c}\\mathrm{CH}_{3}\\\\\\mathrm{Cl}-\\mathrm{C}\\equiv\\mathrm{CH}\\longrightarrow\\\\\\mathrm{CH}_{3}\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{2}\\\\\\mathrm{CH}_{2}\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{2}\\\\\\mathrm{Cl}-\\mathrm{C}\\equiv\\mathrm{CH}\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{2}\\\\\\mathrm{CI}\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{2}\\\\\\mathrm{II}\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{2}\\\\\\mathrm{III}\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{2}\\\\\\mathrm{IV}\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{2}\\\\\\mathrm{VI}\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{2}\\\\\\mathrm{VII}\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{2}\\\\\\mathrm{VIII}\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{2}\\\\\\mathrm{V}\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{2}\\\\\\mathrm{VII}\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{2}\\\\\\mathrm{V}\\\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{2}\\\\\\mathrm{VI}\\\\\\\\end{array}\\begin{array}{c}\\mathrm{CH}_{2}\\\\\\mathrm{V}\\\\\n\n<|ref|>text<|/ref|><|det|>[[525, 547, 732, 561]]<|/det|>\nМетил-2-хлор-4-бутадиен-2,3\n\n<|ref|>text<|/ref|><|det|>[[226, 578, 816, 635]]<|/det|>\nНовый хлорид кипит при 102—103° (уд. вес 0.9515), с аммиачным раствором окиси серебра он не дает осадка, при окислении марганцево-калиевой солью образует α-оксиизомасляную кислоту. При нагревании с водой в присутствии мела он претерпевает следующие превращения:\n\n<|ref|>equation<|/ref|><|det|>[[225, 644, 808, 770]]<|/det|>\n \\[ \\begin{array}{c}\\mathrm{CH}_{3}\\mathrm{CH}_{3}\\quad\\mathrm{CH}_{3}\\mathrm{CH}_{3}\\quad\\mathrm{CH}_{3}\\mathrm{H}_{3}\\mathrm{CH}_{3}\\quad\\mathrm{CH}_{3}\\mathrm{CH}\\quad\\mathrm{CH}_{3}\\mathrm{CH}_{3}\\quad\\mathrm{CH}_{2}\\mathrm{CH}_{2}\\quad\\mathrm{CH}_{2}\\mathrm{CH}_{2}\\quad\\mathrm{CH}_{3}\\mathrm{CH}_{3}\\quad\\mathrm{CH}_{4}\\mathrm{CH}_{3}\\quad\\mathrm{CH}_{3}\\mathrm{CH}_{3}\\\\ \\mathrm{CH}_{3}\\mathrm{CH}_{3}\\quad\\mathrm{CH}_{3}\\quad\\mathrm{CH}_{3}\\quad\\mathrm{CH}_{3}\\mathrm{CH}_{3}\\quad\\quad\\mathrm{CH}_{3}\\mathrm{CH}_{3}\\quad\\mathrm{CH}_{3}\\quad\\quad\\mathrm{CH}_{3}\\mathrm{CH}_{3}\\\\\\mathrm{CH}_{3}\\mathrm{CH}_{3}\\quad\\mathrm{CH}_{3}\\\\\\mathrm{CH}_{3}\\mathrm{CH}_{3}\\quad\\quad\\mathrm{CH}_{3}\\\\\\mathrm{CH}_{3}\\mathrm{CH}_{3}\\\\\\mathrm{CH}_{3}\\mathrm{H}_{3}\\mathrm{CH}_{3}\\\\\\mathrm{CH}_{3}\\mathrm{CH}\\\\\\mathrm{CH}_{3}\\mathrm{CH}\\\\\\mathrm{CH}_{3}\\\\\\mathrm{CH}_{3}\\\\\\mathrm{CH}_{3}\\\\ \\mathrm{CH}_{3}\\\\\\mathrm{CH}_{3}\\\\\\mathrm{CH}_{3}\n===============save results:===============\n",
+    "structures": [
+      {
+        "path": "uploads/crops\\favor1.pdf_p0_equation_4.jpg",
+        "box": [
+          934,
+          1261,
+          1740,
+          1426
+        ],
+        "type": "equation"
+      },
+      {
+        "path": "uploads/crops\\favor1.pdf_p0_equation_7.jpg",
+        "box": [
+          930,
+          1756,
+          1790,
+          1917
+        ],
+        "type": "equation"
+      },
+      {
+        "path": "uploads/crops\\favor1.pdf_p0_equation_10.jpg",
+        "box": [
+          558,
+          2257,
+          2003,
+          2698
+        ],
+        "type": "equation"
+      }
+    ]
+  },
+  {
+    "page": 1,
+    "text_content": "=====================\nBASE:  torch.Size([1, 256, 1280])\nPATCHES:  torch.Size([6, 144, 1280])\n=====================\n<|ref|>text<|/ref|><|det|>[[0, 334, 56, 365]]<|/det|>\nATAA\nB\n\n<|ref|>text<|/ref|><|det|>[[0, 379, 33, 394]]<|/det|>\n1\n\n<|ref|>text<|/ref|><|det|>[[0, 425, 142, 470]]<|/det|>\nNH₄Cl диметил-с т. кип. 76°, створом окиси\n\n<|ref|>text<|/ref|><|det|>[[0, 564, 135, 607]]<|/det|>\nдействии соля-\n; если взаимо-\nпогридрин изо-\n\n<|ref|>text<|/ref|><|det|>[[0, 690, 133, 763]]<|/det|>\nс аммиачным и марганцево- и нагревании превращения:\n\n<|ref|>text<|/ref|><|det|>[[0, 774, 131, 812]]<|/det|>\n \\( H_{3}-C \\)   \\( CH_{2} \\) \n\n \\( \\rightarrow \\)   \\( CH \\)   \\( + \\)   \\( CHCl \\) \n\n<|ref|>text<|/ref|><|det|>[[0, 825, 130, 895]]<|/det|>\n \\( CH_{3}-C=CH_{2} \\) \n\n \\( \\rightarrow \\)   \\( CH=CHCl \\) \n\n(IV)\n\n \\( E_{TIL} \\)  2-хлор-4-\n\nбутадиен-1,3\n\n<|ref|>text<|/ref|><|det|>[[240, 186, 830, 205]]<|/det|>\nАцетилен-аллен-диеновая ступенчатая перегруппировка галогидринов 575\n\n<|ref|>text<|/ref|><|det|>[[222, 216, 830, 260]]<|/det|>\nОбразование аллилена было доказано его гидратацией в ацетон, а образование α-хлоризопрена (т. кип. 99—100°, уд. вес 0.9543) — при помощи реакции с малеиновым ангидридом:\n\n<|ref|>image<|/ref|><|det|>[[285, 260, 752, 360]]<|/det|>\n\n\n<|ref|>image<|/ref|><|det|>[[240, 392, 755, 512]]<|/det|>\n\n\n<|ref|>text<|/ref|><|det|>[[216, 520, 826, 574]]<|/det|>\nРеакция сопровождается обильным выделением хлористого водорода. Были выделены и охарактеризованы две дикарбоновые кислоты: с т. пл. 210—211° и 239—241° — и две тетракарбоновые кислоты: с т. пл. 298—299° и 352—353°.\n\n<|ref|>text<|/ref|><|det|>[[216, 572, 825, 600]]<|/det|>\nИзучение других галогенгидринов общей формулы  \\( C_{n}H_{2n-3}X \\)  продолжается.\n\n<|ref|>text<|/ref|><|det|>[[481, 619, 545, 650]]<|/det|>\n \\( \\frac{1}{2} \\)\n===============save results:===============\n",
+    "structures": [
+      {
+        "path": "uploads/crops\\favor1.pdf_p1_image_9.jpg",
+        "box": [
+          706,
+          911,
+          1864,
+          1261
+        ],
+        "type": "image"
+      },
+      {
+        "path": "uploads/crops\\favor1.pdf_p1_image_10.jpg",
+        "box": [
+          595,
+          1373,
+          1872,
+          1794
+        ],
+        "type": "image"
+      }
+    ]
+  }
+]
